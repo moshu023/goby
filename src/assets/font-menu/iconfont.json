@@ -1,0 +1,100 @@
+{
+  "id": "2563023",
+  "name": "goby",
+  "font_family": "iconfont",
+  "css_prefix_text": "icon-",
+  "description": "",
+  "glyphs": [
+    {
+      "icon_id": "14095379",
+      "name": "漏洞",
+      "font_class": "loudong",
+      "unicode": "e7a1",
+      "unicode_decimal": 59297
+    },
+    {
+      "icon_id": "14445775",
+      "name": "历史",
+      "font_class": "lishi",
+      "unicode": "e75f",
+      "unicode_decimal": 59231
+    },
+    {
+      "icon_id": "15055351",
+      "name": "新建添加",
+      "font_class": "xinjiantianjia",
+      "unicode": "e677",
+      "unicode_decimal": 58999
+    },
+    {
+      "icon_id": "16195525",
+      "name": "扫描",
+      "font_class": "saomiao",
+      "unicode": "e8b2",
+      "unicode_decimal": 59570
+    },
+    {
+      "icon_id": "1305097",
+      "name": "IP",
+      "font_class": "IP",
+      "unicode": "e632",
+      "unicode_decimal": 58930
+    },
+    {
+      "icon_id": "1511903",
+      "name": "web",
+      "font_class": "web-channel",
+      "unicode": "e687",
+      "unicode_decimal": 59015
+    },
+    {
+      "icon_id": "2347922",
+      "name": "扩展组件",
+      "font_class": "extend",
+      "unicode": "e820",
+      "unicode_decimal": 59424
+    },
+    {
+      "icon_id": "2477508",
+      "name": "服务器",
+      "font_class": "fuwuqi",
+      "unicode": "e607",
+      "unicode_decimal": 58887
+    },
+    {
+      "icon_id": "5412484",
+      "name": "资产",
+      "font_class": "zichan-copy-copy",
+      "unicode": "e6b9",
+      "unicode_decimal": 59065
+    },
+    {
+      "icon_id": "5838475",
+      "name": "统计",
+      "font_class": "tongji",
+      "unicode": "e856",
+      "unicode_decimal": 59478
+    },
+    {
+      "icon_id": "10217110",
+      "name": "扩展功能",
+      "font_class": "_H_",
+      "unicode": "e613",
+      "unicode_decimal": 58899
+    },
+    {
+      "icon_id": "13351664",
+      "name": "报告",
+      "font_class": "icon_app_report_",
+      "unicode": "e7d9",
+      "unicode_decimal": 59353
+    },
+    {
+      "icon_id": "13546143",
+      "name": "avds 漏洞扫描",
+      "font_class": "avdsloudongsaomiao",
+      "unicode": "e6ca",
+      "unicode_decimal": 59082
+    }
+  ]
+}
