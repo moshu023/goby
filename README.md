@@ -1,24 +1,49 @@
-# goby
+# goby 这是一个仿照goby做的一个网络端口扫描web端工具，开发形式为：哈工大 we run俱乐部（冰峰实验室）与上海交大网络安全博士团队合作开发。本人主要负责前端页面以及接口数据对接。
+## goby this is a tool about scan ports and IPs that be deployed on web.
 
-## Project setup
-```
-npm install
-```
+# 技术栈 Vue + elementUI + html + js + echarts
 
-### Compiles and hot-reloads for development
-```
-npm run serve
-```
+# 主页面截图
+![主页截图](http://masteryhh.oss-cn-beijing.aliyuncs.com/blog_img/test1.png)
 
-### Compiles and minifies for production
-```
-npm run build
-```
-
-### Lints and fixes files
-```
-npm run lint
-```
-
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+# 主要功能模块介绍
+## 发布任务
+1. 通过手动选择输入IP或者端口，建立扫描任务；前端做完预校验，并且可以进行自定义端口输入。任务名称作为高级设置隐藏，可有可无。提交单个任务后可以进行数据重置。具体页面截图见下
+![新建任务](http://masteryhh.oss-cn-beijing.aliyuncs.com/blog_img/test2.png)
+2. 自定义端口完成扫描任务，截图如下
+![自定义端口](http://masteryhh.oss-cn-beijing.aliyuncs.com/blog_img/test3.png)
+## 扫描
+3. 当点击开始之后进入扫描结果预加载页面，即过渡页面。此时调用后台端接口submitTask并且开始轮询调用接口，查询次任务状态；主页面进度条百分比动态绑定后台任务扫描进度，保留一位小数转化为百分比显示。这样设计能够增强用户体验，同时清晰显示任务扫描进度。具体截图如下
+![过渡页](http://masteryhh.oss-cn-beijing.aliyuncs.com/blog_img/test4.png)
+4.当后台扫描任务完成之后，利用创建的taskCode跳转到扫描结果页面，并提示扫描成功。由于为了合理利用空间，改进goby页面展示，在扫描结果页面隐藏扫描按钮和进度条组件，使得页面空间资源醉话利益化。目前由于主要是一个扫描IP和端口数据，所以其他数据进行简化处理，后台接口也没有进行写入，故暂时不考虑。截图如下
+![扫描结果页面](http://masteryhh.oss-cn-beijing.aliyuncs.com/blog_img/test5.png)
+## 资产
+5. 任务扫描完成之后IP和端口的所有信息都已经可以调用。点击左侧资产按钮，可以进入所有资产统计页面，包括所有IP，端口活动资源，以及对应协议和组件。并详细一一对应展示。截图如下
+![资产](http://masteryhh.oss-cn-beijing.aliyuncs.com/blog_img/test6.png)
+## IP资产
+6. 在扫描页面每一个IP和端口都动态绑定了根据当前数据请求到的详细资产信息，通过点击具体某一个IP或者端口可以跳转。其主要难点是请求到的数据格式非常繁多，数组对象，对象包含对象，并多层嵌套，需对数据进行多层解析。并且由于后台图片是通过base64编码传输，所以需要进行在跳转页面时初始化就转化为文件形式图片并通过对应IP和端口轮询，顺序展示在table中。截图如下
+ 注意： 
+ * 数据处理问题，多层解析，合理利用动态绑定和数组循环；
+ * 针对whatwebInfo、wafInfo(防火墙信息)和whoisInfo，由于返回数据格式较为复杂繁琐，在后端进行添加手动换行符。所以利用pre标签进行识别字符串并自动换行得到一个合理的展示。同时由于pre标签只负责展示原本数据，所以会超出table范围，故需要对其css样式进行限制；
+ * 针对复杂嵌套的json对象，通过(val, key, index)循环得到深层数据，并利用&&， ||等合理筛选展示数据；
+ * 注意针对深层嵌套对象数据，通过判断渲染数据时注意数据来源，想的东西必须全面；
+ * 对于echarts工具，其形式多样化，并且录入数据格式变化比较多，所以需要注意。当然目前暂时没有数据对接，所以展示较为随意；
+ * 针对base64转图片，需要先定义方法，并在页面初始化时进行转化。除此之外，由于图片为数组存储形式，所以需要自定义暂存，并通过字符串拼接转化存储在里面。在调用时通过匹配IP和端口循环数据，判断渲染对应图片；
+ * <font color=red>在渲染图片时，发现在部署到ECS后图片中的中文信息无法展示，本人通过查询资料得知应该是阿里云后台没有安装默认字体，比如微软雅黑。遂联系后端开发人员进行安装没有初始化的后端节点，解决问题。</font>
+ * 由于后台才用的参数与第一次不同，所以script字段和证书信息不同，所以需要条件渲染，针对不同情况处理不同数据对应的IP和端口。不然后果就是页面无法加载，无法找到对应参数；
+![](http://masteryhh.oss-cn-beijing.aliyuncs.com/blog_img/test7.png)
+## 端口资产
+7. 在扫描页面同样可以点击具体端口进入不同端口对应的详细资产，这里由于后台数据是没有筛选的，但是不同端口点击进去初衷是为了筛选数据。所以本人在前端进行了针对端口的数据筛选。首先不同IP资源整合，通过forEach()双层嵌套来筛选出数据存储到数组并循环输出。由于格式需要一一对应，所以样式需要进行分行。截图如下（本人手贱把大型任务扫描记录给删除了，将就看看）
+![](http://masteryhh.oss-cn-beijing.aliyuncs.com/blog_img/test8.png)
+## 报告
+8. 报告页面是对所有资产，IP资源分布以及琐碎资源的整合，并且包含一些base信息。截图如下
+注意（技术难点）：
+* 由于需要绘制出IP资源分布图，本人刚开始想利用表格直接展示，但是无法动态绑定数据。并且需要自行绘制样式。后利用elementUI中标签合理排列和循环展示所有IP信息。由于IP分为活跃和非活跃，故相当于两种状态。这么多信息，本人是根据split函数以‘.’进行划分并利用pop()方法取每一个IP最后一位存储到暂存数组。通过index数学运算判断，结合自定义方法通过indexOf返回不同状态渲染标签，最终得到所有IP数据的活跃状态。红色（danger）即为非活跃状态；绿色（success）为活跃状态。
+* 此处同样对于echarts有一些利用，绘制换装饼图，暂时没有对接数据。参数也是较为复杂的。
+![报告](http://masteryhh.oss-cn-beijing.aliyuncs.com/blog_img/test9.png)
+## 历史记录
+9. 最后一个模块是对于所有扫描过的任务的一个整合。goby软件展示较为潦草，本人为web端添加分页和批量删除功能。通过复选框即可实现。并且每个任务都有扩展内容，点击倒三角即可展示baseInfo。同样设置查看按钮以便进入扫描页面和其他页面。截图如下
+![history](http://masteryhh.oss-cn-beijing.aliyuncs.com/blog_img/test10.png)
+---
+# 后期项目进行SVN代码托管，以便团队修改bug。此阶段任务已完成，功能健全美观，开始上线测试实际使用和健壮性等测试。后期是对任务调度进行优化，由于其扫描节点容易挂掉，后期还需调整性能更强的服务器；除此之外上交团队给出意见将在后期添加导入任务数据功能。目前毫无经验，还在摸索中。
+# 后期bug,由于后端扫描用的参数不同，几次汇报时调用返回的数据字段不统一，所以处理起来比较头疼。特别是script字段和证书信息。后期会采用调用不同参数或者lua脚本看能否重新展示出对应数据字段。此为项目总结和总览概述。
